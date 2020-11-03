@@ -27,15 +27,15 @@ az aks create -n $AKS_NAME -g $RG_NAME -l $AZ_REGION --enable-managed-identity -
 
 # Create an Azure Storage Account
 echo 'Creating Azure Storage Account ' $STORAGE_ACCOUNT_NAME
-az storage account create -n $STORAGE_ACCOUNT_NAME -g $RG_NAME -l $AZ_REGION --sku Standard_LRS
+az storage account create -n $STORAGE_ACCOUNT_NAME -g $RG_NAME -l $AZ_REGION --sku Standard_LRS --default-action Allow
 # Create Queues and Blob Containers
 az storage queue create -n aaa-tasks --auth-mode login --account-name $STORAGE_ACCOUNT_NAME
 az storage queue create -n aaa-transformed --auth-mode login --account-name $STORAGE_ACCOUNT_NAME
 az storage container create -n processed --auth-mode login --account-name $STORAGE_ACCOUNT_NAME --public-access off
 
 # Install Kubectl
-echo 'Installing Kubernetes CLI'
-az aks install-cli
+# echo 'Installing Kubernetes CLI'
+# az aks install-cli
 
 # Get Azure Kubernetes Service credentials
 echo 'Setting AKS credentials for Kubernetes CLI'
