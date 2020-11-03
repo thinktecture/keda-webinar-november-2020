@@ -12,11 +12,8 @@ namespace MessageDispatcher.Models
             var chars = Message.ToCharArray();
             Array.Reverse(chars);
             var originalMessage = string.Concat(chars);
-            string[] numbers = Regex.Split(originalMessage, @"\D+");
-            if (numbers.Length == 0)
-            {
-                return 0;
-            }
+            var numbers = Regex.Split(originalMessage, @"\D+");
+            if (numbers.Length == 0) return 0;
             return int.Parse(numbers[1]);
         }
     }

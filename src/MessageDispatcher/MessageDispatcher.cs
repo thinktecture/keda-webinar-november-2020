@@ -1,10 +1,9 @@
 using System;
 using System.IO;
 using System.Text.Json;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Extensions.Logging;
 using MessageDispatcher.Models;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
 
 namespace MessageDispatcher
 {
@@ -12,8 +11,10 @@ namespace MessageDispatcher
     {
         [FunctionName("MessageDispatcher")]
         public static void Run(
-            [QueueTrigger("aaa-transformed", Connection = "KedaWebinarStorageAccount")] string queueItem,
-            [Blob("processed/{rand-guid}.json", FileAccess.Write, Connection = "KedaWebinarStorageAccount")] Stream processedBlob,
+            [QueueTrigger("aaa-transformed", Connection = "KedaWebinarStorageAccount")]
+            string queueItem,
+            [Blob("processed/{rand-guid}.json", FileAccess.Write, Connection = "KedaWebinarStorageAccount")]
+            Stream processedBlob,
             ILogger log)
         {
             log.LogInformation("Processing transformed Message");
@@ -38,8 +39,10 @@ namespace MessageDispatcher
                     }));
                     log.LogInformation("Message destructed and processed");
                 }
+
                 return;
             }
+
             log.LogWarning("Cant process am empty message");
         }
     }
