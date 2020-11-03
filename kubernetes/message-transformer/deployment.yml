@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-transformer
+  namespace: message-transformer
+  labels:
+    conference: keda-webinar
+    app: message-transformer
+spec:
+  selector:
+    matchLabels:
+      app: message-transformer
+  template:
+    metadata:
+      labels:
+        app: message-transformer
+    spec:
+      containers:
+      - name: azfn
+        image: kedawebinar2020.azurecr.io/functions/transformer:0.0.1
+        env:
+        - name: AzureFunctionsJobHost__functions__0
+          value: MessageTransformer
+        envFrom:
+        - secretRef:
+            name: az-storage-auth
+        resources:
+          requests:
+            memory: 42Mi
+            cpu: 50m
+---
+apiVersion: keda.k8s.io/v1alpha1
+kind: ScaledObject
+metadata:
+  name: message-transformer
+  namespace: message-transformer
+  labels:
+    conference: keda-webinar
+    deploymentName: message-transformer
+spec:
+  scaleTargetRef:
+    deploymentName: message-transformer
+  pollingInterval: 5
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  cooldownPeriod: 60
+  triggers:
+  - type: azure-queue
+    metadata: 
+      queueLength: '3'
+      connection: KedaWebinarStorageAccount
+      queueName: aaa-tasks 
