@@ -16,7 +16,7 @@ namespace MessageProducer
             var configFilePath = Path.Join(Environment.CurrentDirectory, "config.json");
             if (!File.Exists(configFilePath))
                 Console.WriteLine(
-                    "Please create a `config.json` with a `ConnectionString` property, pointing to your Storage Account");
+                    "Create a `config.json` with a `ConnectionString` property, pointing to your Storage Account");
             var serializerSettings = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
